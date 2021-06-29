@@ -1,0 +1,39 @@
+.modalBody {
+  padding-top: 10px;
+}
+.modalHeader {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 25px;
+}
+.modal {
+  width: 100%;
+  max-width: 960px;
+  height: calc(100% - 144px);
+  border-radius: 2px;
+  padding: 24px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 5px 10px, rgb(15 15 15 / 20%) 0px 15px 40px;
+}
+.modalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modalContent {
+  padding: 0 150px;
+}
+.title {
+  font-size: 2.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+  padding: 3px 2px;
+}

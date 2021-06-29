@@ -1,0 +1,13 @@
+.card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteBtn {
+  background-color: transparent;
+  border: none;
+}
+
+.deleteBtn :hover {
+  cursor: pointer;
+}

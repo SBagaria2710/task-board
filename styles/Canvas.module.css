@@ -1,0 +1,60 @@
+.taskBoard {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+.taskStackContainer {
+    display: flex;
+    flex-direction: column;
+}
+.groupContainer {
+    display: grid;
+    align-items:center;
+    grid-template-columns: 8fr 1fr 1fr;
+}
+.groupTitle {
+    padding: 0 8px;
+    font-size: 1rem;
+    color: rgb(55, 53, 47);
+}
+.groupTitle span {
+    margin-left: 8px;
+    font-size: 1rem;
+    color: rgba(55, 53, 47, 0.4);
+}
+.deleteIcon {
+    text-align: left;
+    padding-top: 6px;
+}
+.deleteIcon img {
+    min-width: 18px !important;
+    min-height: 18px !important;
+}
+.deleteIcon:hover{
+    background: rgba(55, 53, 47, 0.08);
+}
+.addNewTask {
+    height: 32px;
+    user-select: none;
+    cursor: pointer;
+    display: inline-flex;
+    border: none;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    padding: 0 8px;
+    color: rgba(55, 53, 47, 0.4);
+    background: none;
+    transition: background 200ms ease-in-out 0s;
+}
+.addNewTask:hover{
+    background: rgba(55, 53, 47, 0.08);
+}
+.addNewTaskPlus {
+    font-size: 24px;
+}
+.addGroupBtn {
+    min-height: 28px;
+    margin: 16px 0;
+}
