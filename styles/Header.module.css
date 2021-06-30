@@ -1,16 +1,22 @@
 .header {
+    display: flex;
+    column-gap: 8px;
     padding: 16px 12px;
     border-bottom: 2px solid #14213d;
-    text-align: center;
 }
 .header h3 {
     margin: 0;
 }
+.header span {
+    color: #fff;
+}
+.header span a {
+    color: #fff;
+}
 .underlined {
     color: black !important;
     flex: 1;
-    cursor: pointer;
-    background-image: linear-gradient(to right, yellow 0, yellow 100%);
+    background-image: linear-gradient(to right, rgba(155, 154, 151, 0.4) 0, rgba(155, 154, 151, 0.4) 100%);
     background-position: 0 1.2em;
     background-size: 0 100%;
     background-repeat: no-repeat;
@@ -22,5 +28,5 @@
 .underlinedReverse {
     background-position: 100% -0.1em;
     transition: background 0.8s;
-    background-image: linear-gradient(to right, rgb(249, 189, 12, 50%) 0, rgb(249, 189, 12, 50%) 100%);
+    background-image: linear-gradient(to right, rgba(155, 154, 151, 0.4) 0, rgba(155, 154, 151, 0.4) 100%);
 }

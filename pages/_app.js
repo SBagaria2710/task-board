@@ -8,6 +8,7 @@ function App({ Component, pageProps }) {
         <>
             <Head>
                 <title>Notion's TaskBoard Clone assignment</title>
+                <link rel="shortcut icon" href="public/assets/icons/task-board.png" />
             </Head>
             <div>
                 <Component {...pageProps} />

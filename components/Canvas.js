@@ -149,7 +149,7 @@ function Canvas() {
             {(provided, snapshot) => (
               <div className={s.taskStackContainer}>
                 <div className={s.groupContainer}>
-                  <p className={s.groupTitle}>Group Title<span>{el.length}</span></p>
+                  <p className={s.groupTitle}>Group Title {ind+1}<span>{el.length}</span></p>
                   <button onClick={addTaskInGroup(ind)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   <button
                     className={`${cardStyles.deleteBtn} ${s.deleteIcon}`}
