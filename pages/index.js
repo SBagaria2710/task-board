@@ -18,7 +18,6 @@ function Index() {
         <>
             <Header />
             <main className={S.main}>
-                <section></section>
                 <section>
                     {boardReady ? <Canvas /> : null}
                 </section>
