@@ -4,11 +4,5 @@
     "files": [
       "static/chunks/node_modules_next_dist_client_dev_noop_js.js"
     ]
-  },
-  "index.js -> ../components/Canvas": {
-    "id": "./components/Canvas.js",
-    "files": [
-      "static/chunks/components_Canvas_js.js"
-    ]
   }
 }
