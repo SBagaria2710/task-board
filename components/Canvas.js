@@ -22,7 +22,7 @@ import cardStyles from "../styles/Card.module.css";
 const getItems = (count, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime() + k}`,
-    content: `item ${k + offset}`,
+    content: `Task ${k + offset}`,
   }));
 
 const reorder = (list, startIndex, endIndex) => {
