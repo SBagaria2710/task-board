@@ -34,6 +34,7 @@ cloud/
 
 # next.js build output
 .next
+.next/*
 
 # dotenv environment variables file (build for Zeit Now)
 .env
