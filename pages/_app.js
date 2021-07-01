@@ -7,8 +7,8 @@ function App({ Component, pageProps }) {
     return (
         <>
             <Head>
-                <title>Notion's TaskBoard Clone assignment</title>
-                <link rel="shortcut icon" href="public/assets/icons/task-board.png" />
+                <title>TaskBoard</title>
+                <link rel="project-logo" href="../public/assets/icons/task-board.png" />
             </Head>
             <div>
                 <Component {...pageProps} />

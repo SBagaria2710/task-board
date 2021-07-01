@@ -6,15 +6,19 @@
   justify-content: flex-end;
   font-size: 25px;
 }
+.modalHeader img {
+  cursor: pointer;
+}
 .modal {
   width: 100%;
   max-width: 960px;
-  height: calc(100% - 144px);
+  height: calc(100% - 250px);
   border-radius: 2px;
   padding: 24px;
   margin: 0 auto;
   background: white;
   box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 5px 10px, rgb(15 15 15 / 20%) 0px 15px 40px;
+  overflow: scroll;
 }
 .modalOverlay {
   position: absolute;
@@ -35,5 +39,19 @@
   white-space: pre-wrap;
   word-break: break-word;
   caret-color: rgb(55, 53, 47);
-  padding: 3px 2px;
+}
+
+@media only screen and (max-width: 600px) {
+  .modal {
+    height: 100%;
+  }
+  .modalHeader {
+    font-size: 60px;
+  }
+  .modalContent {
+    padding: 0 8px 20px;
+  }
+  .modalContent h1 {
+    margin-block: 0;
+  }
 }

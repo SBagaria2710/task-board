@@ -7,8 +7,9 @@ import {
 } from "react-beautiful-dnd";
 
 // Components
-import Card from "../components/Card";
-import Modal from "../components/Modal";
+import Card from "./Card";
+import Modal from "./Modal";
+import Tooltip from "./Tooltip";
 import Image from 'next/image';
 
 // Icon
@@ -134,14 +135,25 @@ function Canvas() {
     setState([...state, []]);
   }
 
+  function handleContentEditable(event) {
+    console.log(event.target.innerText);
+  }
+
   useEffect(() => {
     resetServerContext();
   }, []);
-  console.log(state);
+  
   return (
     <div className={s.taskBoard}>
-      <Modal show={showModal} onClose={() => setShowModal(false)} title={'Shashwat'}>
-        Hello World
+      <Modal show={showModal} onClose={() => setShowModal(false)} title={'Task Title'}>
+        Task Description Nulla esse sit deserunt tempor quis.
+        Exercitation esse ipsum adipisicing tempor do tempor culpa minim quis in laboris. Velit ut nostrud incididunt irure do ex. Aliqua excepteur sint eu ullamco ut.
+        Proident labore cupidatat veniam laboris.
+        Adipisicing aliquip duis incididunt pariatur commodo ut voluptate duis commodo sunt eu.
+        Sint anim aliquip aliquip excepteur. Voluptate officia aliqua labore commodo nostrud non irure.
+        Sit nisi commodo nostrud incididunt ipsum reprehenderit reprehenderit ut minim aliqua voluptate labore. Id magna esse incididunt sint. Proident nisi enim sint excepteur amet amet voluptate ut veniam. Deserunt esse deserunt ad commodo labore adipisicing aliqua velit eiusmod cupidatat laboris.
+        Ex nulla aliqua laborum do anim ea reprehenderit. Qui laboris ipsum deserunt aliquip aute dolor sunt ut magna reprehenderit sint amet cillum.
+        Laboris voluptate proident aliqua nulla mollit deserunt consequat nisi ea minim.
       </Modal>
       <DragDropContext onDragEnd={onDragEnd}>
         {state.map((el, ind) => (
@@ -149,8 +161,18 @@ function Canvas() {
             {(provided, snapshot) => (
               <div className={s.taskStackContainer}>
                 <div className={s.groupContainer}>
-                  <p className={s.groupTitle}>Group Title {ind+1}<span>{el.length}</span></p>
-                  <button onClick={addTaskInGroup(ind)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
+                  <p
+                    className={s.groupTitle}
+                    contentEditable={true}
+                    onChange={(event) => handleContentEditable(event)}
+                    onInput={(event) => handleContentEditable(event)}
+                    >
+                      Group Title {ind+1}
+                      <span>{el.length}</span>
+                  </p>
+                  <Tooltip tooltipText="Create New Group" placement='top'>
+                    <button onClick={addTaskInGroup(ind)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
+                  </Tooltip>
                   <button
                     className={`${cardStyles.deleteBtn} ${s.deleteIcon}`}
                     type="button"
