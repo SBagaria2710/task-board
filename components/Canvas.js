@@ -12,6 +12,12 @@ import Modal from "./Modal";
 import Tooltip from "./Tooltip";
 import Image from 'next/image';
 
+// Utils
+import { getEmptyTask, getEmptyGroup } from 'public/utils';
+
+// Constants
+import { initialModalData } from 'public/constants';
+
 // Icon
 import DeleteIcon from 'public/assets/icons/delete-icon.png';
 
@@ -19,41 +25,35 @@ import DeleteIcon from 'public/assets/icons/delete-icon.png';
 import s from "../styles/Canvas.module.css";
 import cardStyles from "../styles/Card.module.css";
 
-// Fake Data
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime() + k}`,
-    content: `Task ${k + offset}`,
-  }));
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
+const reorder = (group, startIndex, endIndex) => {
+  if (!group.length) return;
+  const { tasks } = group[0];
+  const result = Array.from(tasks);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-  return result;
+  return { ...group[0], tasks: result };
 };
 
 const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
+  if (!(source?.length && destination?.length)) return;
+  const { tasks: sourceTasks } = source[0];
+  const { tasks: destinationTasks } = destination[0];
+  const sourceClone = Array.from(sourceTasks);
+  const destClone = Array.from(destinationTasks);
   const [removed] = sourceClone.splice(droppableSource.index, 1);
-
   destClone.splice(droppableDestination.index, 0, removed);
 
   const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
+  result['source'] = { ...source[0], tasks: sourceClone };
+  result['destination'] = { ...destination[0], tasks: destClone };
   return result;
 };
-
-const grid = 8;
 
 const getItemStyle = (snapshot, isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+  padding: '16px',
+  margin: `0 0 8px 0`,
   boxShadow:
     "rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px",
   display: "block",
@@ -68,115 +68,144 @@ const getItemStyle = (snapshot, isDragging, draggableStyle) => ({
   transition: "background 100ms ease-out 0s",
   padding: "8px 10px 10px",
 
-  // change background colour if dragging
+  // change background colour and cursor if dragging
   background: isDragging ? "rgba(55, 53, 47, 0.03)" : "white",
+  cursor: isDragging ? "drag" : "pointer",
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
-  padding: grid,
+  padding: '8px',
   width: 300,
 });
 
 function Canvas() {
-  const [state, setState] = useState([getItems(5), getItems(5, 5)]);
-  const [showModal, setShowModal] = useState(false);
+  const [state, setState] = useState([]);
+  const [taskModal, setTaskModal] = useState(initialModalData);
   const onDragEnd = (result) => {
     const { source, destination } = result;
-
     // If dropped outside the list
     if (!result.destination) {
       return;
     }
-    const sInd = +source.droppableId;
-    const dInd = +destination.droppableId;
+    const sInd = source.droppableId;
+    const dInd = destination.droppableId;
+
     if (sInd === dInd) {
-      const items = reorder(state[sInd], source.index, destination.index);
-      const newState = [...state];
-      newState[sInd] = items;
+      const selectedGroup = state.filter(group => group.id === sInd);
+      const reorderedGroup = reorder(selectedGroup, source.index, destination.index);
+      const newState = state.map(group => group.id === sInd ? reorderedGroup : group);
       setState(newState);
     } else {
-      const result = move(state[sInd], state[dInd], source, destination);
-      const newState = [...state];
-      newState[sInd] = result[sInd];
-      newState[dInd] = result[dInd];
-
+      const fromGroup = state.filter(group => group.id === sInd);
+      const toGroup = state.filter(group => group.id === dInd);
+      const result = move(fromGroup, toGroup, source, destination);
+      const newState = state.map(group => {
+        if (group.id === sInd) {
+          return result.source;
+        } else if (group.id === dInd) {
+          return result.destination;
+        } else {
+          return group;
+        }
+      });
       setState(newState);
     }
   };
 
-  const handleDeleteGroup = (ind) => () => {
-    const newState = [...state];
-    newState.splice(ind, 1)
+  const handleDeleteGroup = (groupId) => () => {
+    const newState = state.filter(group => !(group.id === groupId));
     setState(newState);
   };
 
-  const handleDeleteCard = (ind, index) => (event) => {
+  const handleDeleteCard = (groupId, taskId) => (event) => {
     event.stopPropagation();
-    const newState = [...state];
-    newState[ind].splice(index, 1);
+    if (!(groupId || taskId)) return;
+    const newState = state.map(group => {
+      const { id, tasks } = group;
+      if (groupId === id) {
+        return { ...group, tasks: tasks.filter(task => !(taskId === task.id))}
+      }
+      return group;
+    });
     setState(newState);
   };
 
-  const addTaskInGroup = (groupIndex) => () => {
-      console.log(groupIndex);
-    const newState = state.map((group, idx) => {
-        if (idx === groupIndex) {
-            return [...group, ...getItems(1)];
-        }
-        return group;
-    })
+  const addTaskInGroup = (groupId) => () => {
+    const newState = state.map(group => {
+      const { id, tasks } = group;
+      if (groupId === id) {
+        return { ...group, tasks: [...tasks, getEmptyTask()]}
+      }
+      return group;
+    });
     setState(newState);
   };
 
   const addNewGroup = () => {
-    setState([...state, []]);
+    setState([...state, getEmptyGroup()]);
   }
 
   function handleContentEditable(event) {
     console.log(event.target.innerText);
   }
 
+  //Data Persistance
+  useEffect(() => {
+    const stateData = localStorage.getItem('task-board-state');
+    const modalData = localStorage.getItem('modal-state');
+    try {
+      if (stateData) {
+        setState(JSON.parse(stateData));
+      }
+      if (modalData) {
+        setTaskModal(JSON.parse(modalData));
+      }
+    } catch(e) {
+      console.error('ERROR: ', e);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('task-board-state', JSON.stringify(state));
+    localStorage.setItem('modal-state', JSON.stringify(taskModal));
+  });
+
   useEffect(() => {
     resetServerContext();
   }, []);
-  
+
   return (
     <div className={s.taskBoard}>
-      <Modal show={showModal} onClose={() => setShowModal(false)} title={'Task Title'}>
-        Task Description Nulla esse sit deserunt tempor quis.
-        Exercitation esse ipsum adipisicing tempor do tempor culpa minim quis in laboris. Velit ut nostrud incididunt irure do ex. Aliqua excepteur sint eu ullamco ut.
-        Proident labore cupidatat veniam laboris.
-        Adipisicing aliquip duis incididunt pariatur commodo ut voluptate duis commodo sunt eu.
-        Sint anim aliquip aliquip excepteur. Voluptate officia aliqua labore commodo nostrud non irure.
-        Sit nisi commodo nostrud incididunt ipsum reprehenderit reprehenderit ut minim aliqua voluptate labore. Id magna esse incididunt sint. Proident nisi enim sint excepteur amet amet voluptate ut veniam. Deserunt esse deserunt ad commodo labore adipisicing aliqua velit eiusmod cupidatat laboris.
-        Ex nulla aliqua laborum do anim ea reprehenderit. Qui laboris ipsum deserunt aliquip aute dolor sunt ut magna reprehenderit sint amet cillum.
-        Laboris voluptate proident aliqua nulla mollit deserunt consequat nisi ea minim.
+      <Modal show={taskModal.show} onClose={() => setTaskModal(initialModalData)} title={taskModal?.info?.title}>
+        <p>{taskModal?.info?.description}</p>
       </Modal>
       <DragDropContext onDragEnd={onDragEnd}>
-        {state.map((el, ind) => (
-          <Droppable key={ind} droppableId={`${ind}`}>
+        {state.map((el, ind) => {
+          const { id: groupId, name: groupName, colorHex, tasks } = el;
+          return (
+          <Droppable key={groupId} droppableId={groupId}>
             {(provided, snapshot) => (
               <div className={s.taskStackContainer}>
                 <div className={s.groupContainer}>
                   <p
                     className={s.groupTitle}
-                    contentEditable={true}
-                    onChange={(event) => handleContentEditable(event)}
-                    onInput={(event) => handleContentEditable(event)}
+                    // contentEditable={true}
+                    // onChange={(event) => handleContentEditable(event)}
+                    // onInput={(event) => handleContentEditable(event)}
                     >
-                      Group Title {ind+1}
-                      <span>{el.length}</span>
+                      {groupName || groupId}
+                      <span>{tasks.length}</span>
                   </p>
                   <Tooltip tooltipText="Create New Group" placement='top'>
-                    <button onClick={addTaskInGroup(ind)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
+                    <button onClick={addTaskInGroup(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   </Tooltip>
                   <button
                     className={`${cardStyles.deleteBtn} ${s.deleteIcon}`}
                     type="button"
-                    onClick={handleDeleteGroup(ind)}
+                    onClick={handleDeleteGroup(groupId)}
                   >
                     <Image src={DeleteIcon} alt="Delete Icon" width={12} height={20} /> 
                   </button>
@@ -186,10 +215,11 @@ function Canvas() {
                   style={getListStyle(snapshot.isDraggingOver)}
                   {...provided.droppableProps}
                 >
-                  {el.map((item, index) => (
+                  {tasks.map((task, index) => {
+                    return (
                     <Draggable
-                      key={item.id}
-                      draggableId={`draggable-${item.id}`}
+                      key={task?.id}
+                      draggableId={`draggable-${task?.id}`}
                       index={index}
                     >
                       {(provided, snapshot) => (
@@ -204,24 +234,24 @@ function Canvas() {
                           )}
                         >
                           <Card
-                            handleDeleteTask={handleDeleteCard(ind, index)}
-                            onClick={() => setShowModal(true)}
+                            handleDeleteTask={handleDeleteCard(groupId, task?.id)}
+                            onClick={() => setTaskModal({ ...taskModal, show: true, info: { title: `Title ${task?.id}`, description:  `Description ${task?.id}` } })}
                           >
-                            {item.content}
+                            {task?.title || task?.id}
                           </Card>
                         </div>
                       )}
                     </Draggable>
-                  ))}
+                  )})}
                   {provided.placeholder}
                 </div>
-                <button onClick={addTaskInGroup(ind)} className={s.addNewTask}>
+                <button onClick={addTaskInGroup(groupId)} className={s.addNewTask}>
                   + New Task
                 </button>
               </div>
             )}
           </Droppable>
-        ))}
+        )})}
         <button onClick={addNewGroup} className={`${s.addNewTask} ${s.addGroupBtn}`}>
           <p>+ Add a Group</p>
         </button>

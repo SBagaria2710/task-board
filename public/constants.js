@@ -1,0 +1,1 @@
+export const initialModalData = { show: false, info: null };
