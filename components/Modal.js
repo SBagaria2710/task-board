@@ -33,9 +33,9 @@ function Modal({ show, onClose, children, title }) {
     <div className={s.modalOverlay}>
       <div className={s.modal} ref={ref}>
         <div className={s.modalHeader}>
-          <a href="#" onClick={handleCloseClick}>
+          <div onClick={handleCloseClick}>
             <Image src={CrossIcon} alt="Cross Icon" width={20} height={20} />
-          </a>
+          </div>
         </div>
         <div className={s.modalContent}>
           {title && <h1 className={s.title}>{title}</h1>}

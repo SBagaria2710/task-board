@@ -7,7 +7,7 @@ import Header from '../components/Header';
 const Canvas = dynamic(import('../components/Canvas'));
 
 // Styles
-import * as S from '../styles/index.module.css';
+import s from '../styles/index.module.css';
 
 function Index() {
     const [boardReady, setBoardReady] = useState(false);
@@ -17,7 +17,7 @@ function Index() {
     return (
         <>
             <Header />
-            <main className={S.main}>
+            <main className={s.main}>
                 <section>
                     {boardReady ? <Canvas /> : null}
                 </section>
