@@ -8,13 +8,14 @@ import Image from 'next/image';
 import CrossIcon from 'public/assets/icons/cross.png';
 
 //Hooks
-import { useOutsideClick } from "../hooks";
+import { useKeyPress, useOutsideClick } from "../hooks";
 
 // Style
 import s from "../styles/Modal.module.css";
 
 function Modal({ show, onClose, children, title }) {
   const ref = useRef();
+  useKeyPress('Escape', () => onClose());
   useOutsideClick(ref, () => onClose());
   const [isBrowser, setIsBrowser] = useState(false);
   
@@ -38,8 +39,7 @@ function Modal({ show, onClose, children, title }) {
           </div>
         </div>
         <div className={s.modalContent}>
-          {title && <h1 className={s.title}>{title}</h1>}
-          <div className={s.modalBody}>{children}</div>
+          {children}
         </div>
       </div>
     </div>

@@ -1,0 +1,49 @@
+.title {
+  font-size: 2.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+}
+.modalBody {
+  padding-top: 10px;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 2.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+  border: none;
+}
+.titleInput input {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-block: 1.67rem;
+  border: none;
+}
+.titleInput input:focus {
+  outline: 0;
+}
+
+.descriptionInput input {
+  width: 100%;
+  font-size: 1rem;
+  border: none;
+}
+.descriptionInput input:focus {
+  outline: 0;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .title {
+    margin-block: 0;
+    font-size: 1.75rem;
+  }
+  .wrapper {
+    font-size: 1.75rem;
+    margin-block: 1rem;
+  }
+}
