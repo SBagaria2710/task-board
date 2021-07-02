@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -10,44 +10,21 @@ import {
 import Card from "./Card";
 import Modal from "./Modal";
 import Tooltip from "./Tooltip";
+import TaskModal from "../Modals/TaskModal";
 import Image from 'next/image';
 
 // Utils
-import { getEmptyTask, getEmptyGroup } from 'public/utils';
+import { getEmptyTask, getEmptyGroup, updateTaskValue, move, reorder } from 'public/utils';
 
 // Constants
-import { initialModalData } from 'public/constants';
+import { initialModalData, initialNewTaskData } from 'public/constants';
 
 // Icon
 import DeleteIcon from 'public/assets/icons/delete-icon.png';
 
 // Styles
-import s from "../styles/Canvas.module.css";
+import s from "../styles/Canvas.module.css";TaskModal
 import cardStyles from "../styles/Card.module.css";
-
-const reorder = (group, startIndex, endIndex) => {
-  if (!group.length) return;
-  const { tasks } = group[0];
-  const result = Array.from(tasks);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return { ...group[0], tasks: result };
-};
-
-const move = (source, destination, droppableSource, droppableDestination) => {
-  if (!(source?.length && destination?.length)) return;
-  const { tasks: sourceTasks } = source[0];
-  const { tasks: destinationTasks } = destination[0];
-  const sourceClone = Array.from(sourceTasks);
-  const destClone = Array.from(destinationTasks);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result['source'] = { ...source[0], tasks: sourceClone };
-  result['destination'] = { ...destination[0], tasks: destClone };
-  return result;
-};
 
 const getItemStyle = (snapshot, isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -82,8 +59,13 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function Canvas() {
+  const groupInputRef = useRef('');
+  const taskInputRef = useRef('');
   const [state, setState] = useState([]);
   const [taskModal, setTaskModal] = useState(initialModalData);
+  const [isEditingNewGroupName, setIsEditingNewGroupName] = useState(false);
+  const [newTask, setNewTask] = useState(initialNewTaskData);
+
   const onDragEnd = (result) => {
     const { source, destination } = result;
     // If dropped outside the list
@@ -133,7 +115,7 @@ function Canvas() {
     setState(newState);
   };
 
-  const addTaskInGroup = (groupId) => () => {
+  const addTaskInGroup = (groupId) => {
     const newState = state.map(group => {
       const { id, tasks } = group;
       if (groupId === id) {
@@ -144,13 +126,73 @@ function Canvas() {
     setState(newState);
   };
 
-  const addNewGroup = () => {
-    setState([...state, getEmptyGroup()]);
+  const toggleIsEditingNewGroupName = () => setIsEditingNewGroupName(!isEditingNewGroupName);
+  const toggleNewTask = (groupId) => () => {
+    addTaskInGroup(groupId);
+    setNewTask({ ...newTask, isAdding: !newTask?.isAdding, groupId})
+  };
+
+  const handleKeyUp = (groupId = '', taskId = '') => event => {
+    const { value, name } = event.target;
+    if ((event.key === 'Escape' || event.key === 'Enter')) {
+      if (name === 'newGroupTitle') {
+        if (value) {
+          setState([...state, getEmptyGroup(value)]);
+          toggleIsEditingNewGroupName();
+        } else {
+          toggleIsEditingNewGroupName();
+        }
+      } else if (name === 'newTaskTitle') {
+        const newState = updateTaskValue(state, groupId, taskId, 'title', value);
+        setState(newState);
+        setNewTask({ ...newTask, ...initialNewTaskData })
+      }
+    }
   }
 
-  function handleContentEditable(event) {
-    console.log(event.target.innerText);
+  const handleInput = (groupId = '', taskId = '') => (event) => {
+    event.stopPropagation();
+    const { value, name } = event.target;
+    if (name === 'newGroupTitle') {
+      if (value) {
+        setState([...state, getEmptyGroup(value)]);
+        toggleIsEditingNewGroupName();
+      } else {
+        toggleIsEditingNewGroupName();
+      }
+    } else if (name === 'newTaskTitle') {
+      const newState = updateTaskValue(state, groupId, taskId, 'title', value);
+      setState(newState);
+      setNewTask({ ...newTask, ...initialNewTaskData })
+    }
   }
+
+  const openModal = (task, groupId) => () => {
+    if (!newTask?.isAdding) {
+      setTaskModal(
+        { ...taskModal, 
+          show: true, 
+          info: {
+            title: task.title,
+            description: task.description,
+            groupId,
+            task,
+          }
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (isEditingNewGroupName) {
+      groupInputRef.current.focus();
+    }
+  }, [isEditingNewGroupName]);
+
+  useEffect(() => {
+    if (newTask.isAdding) {
+      taskInputRef.current.focus();
+    }
+  }, [newTask.isAdding]);
 
   //Data Persistance
   useEffect(() => {
@@ -179,28 +221,21 @@ function Canvas() {
 
   return (
     <div className={s.taskBoard}>
-      <Modal show={taskModal.show} onClose={() => setTaskModal(initialModalData)} title={taskModal?.info?.title}>
-        <p>{taskModal?.info?.description}</p>
-      </Modal>
+      {taskModal.show && <TaskModal onClose={() => setTaskModal(initialModalData)} taskObj={taskModal?.info} state={state} setState={setState} />}
       <DragDropContext onDragEnd={onDragEnd}>
-        {state.map((el, ind) => {
-          const { id: groupId, name: groupName, colorHex, tasks } = el;
+        {state.map(el => {
+          const { id: groupId, name: groupName, colorHex, justCreated, tasks } = el;
           return (
           <Droppable key={groupId} droppableId={groupId}>
             {(provided, snapshot) => (
               <div className={s.taskStackContainer}>
                 <div className={s.groupContainer}>
-                  <p
-                    className={s.groupTitle}
-                    // contentEditable={true}
-                    // onChange={(event) => handleContentEditable(event)}
-                    // onInput={(event) => handleContentEditable(event)}
-                    >
-                      {groupName || groupId}
-                      <span>{tasks.length}</span>
+                  <p className={s.groupTitle}>
+                    {groupName}
+                    <span>{tasks.length}</span>
                   </p>
                   <Tooltip tooltipText="Create New Group" placement='top'>
-                    <button onClick={addTaskInGroup(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
+                    <button onClick={toggleNewTask(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   </Tooltip>
                   <button
                     className={`${cardStyles.deleteBtn} ${s.deleteIcon}`}
@@ -217,44 +252,71 @@ function Canvas() {
                 >
                   {tasks.map((task, index) => {
                     return (
-                    <Draggable
-                      key={task?.id}
-                      draggableId={`draggable-${task?.id}`}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot,
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          <Card
-                            handleDeleteTask={handleDeleteCard(groupId, task?.id)}
-                            onClick={() => setTaskModal({ ...taskModal, show: true, info: { title: `Title ${task?.id}`, description:  `Description ${task?.id}` } })}
+                      <Draggable
+                        key={task?.id}
+                        draggableId={`draggable-${task?.id}`}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot,
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
                           >
-                            {task?.title || task?.id}
-                          </Card>
-                        </div>
-                      )}
-                    </Draggable>
-                  )})}
+                            <Card
+                              handleDeleteTask={handleDeleteCard(groupId, task?.id)}
+                              onClick={openModal(task, groupId)}
+                            >
+                              {task?.isNew ? (
+                                <div className={`${s.newTitleWrapper} ${s.newTaskTitleWrapper}`}>
+                                  <input
+                                    ref={taskInputRef}
+                                    name="newTaskTitle"
+                                    placeholder="Task Title..."
+                                    autoComplete="off"
+                                    className={s.newGroupTitle}
+                                    onBlur={handleInput(groupId, task?.id)}
+                                    onKeyUp={handleKeyUp(groupId, task?.id)}
+                                  />
+                                </div>
+                              ) : (task?.title || <span className={s.untitledTask}>Untitled</span>)}
+                            </Card>
+                          </div>
+                        )}
+                      </Draggable>
+                    )}
+                  )}
                   {provided.placeholder}
                 </div>
-                <button onClick={addTaskInGroup(groupId)} className={s.addNewTask}>
+                <button onClick={toggleNewTask(groupId)} className={s.addNewTask}>
                   + New Task
                 </button>
               </div>
             )}
           </Droppable>
         )})}
-        <button onClick={addNewGroup} className={`${s.addNewTask} ${s.addGroupBtn}`}>
+        {isEditingNewGroupName ? (
+        <div className={`${s.newTitleWrapper} ${s.newGroupTitleWrapper}`}>
+          <input 
+            ref={groupInputRef}
+            name="newGroupTitle"
+            placeholder="Group Name"
+            className={s.newGroupTitle}
+            onBlur={handleInput()}
+            onKeyUp={handleKeyUp()}
+            autoComplete="off"
+          />
+        </div>
+        ) : (
+        <button onClick={toggleIsEditingNewGroupName} className={`${s.addNewTask} ${s.addGroupBtn}`}>
           <p>+ Add a Group</p>
         </button>
+        )}
       </DragDropContext>
     </div>
   );

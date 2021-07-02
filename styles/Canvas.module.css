@@ -33,6 +33,45 @@
 .deleteIcon:hover{
     background: rgba(55, 53, 47, 0.08);
 }
+.newTitleWrapper {
+    display: flex;
+    height: 24px;
+    align-items: center;
+    font-size: 0.875rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;
+    background: rgba(242, 241, 238, 0.6);
+}
+.newTaskTitleWrapper {
+    box-shadow: none;
+    background: none;
+}
+.newGroupTitleWrapper {
+    margin: 1rem auto;
+}
+.newGroupTitleWrapper:focus-within {
+    -webkit-box-shadow: 0 0 0 4px rgba(21, 156, 228, 0.4);
+    -moz-box-shadow: 0 0 0 4px rgba(21, 156, 228, 0.4);
+    box-shadow: 0 0 0 4px rgba(21, 156, 228, 0.4);
+}
+.newGroupTitle {
+    border: none;
+    background: none;
+    width: 100%;
+    display: block;
+    resize: none;
+    padding: 0px;
+}
+.newGroupTitle:focus {
+    outline: 0;
+}
+.untitledTask {
+    caret-color: rgb(55, 53, 47);
+    font-weight: 500;
+    color: rgb(55, 53, 47);
+    -webkit-text-fill-color: rgba(55, 53, 47, 0.4);
+  }
 .addNewTask {
     height: 32px;
     user-select: none;
