@@ -1,32 +1,59 @@
 .header {
     display: flex;
-    column-gap: 8px;
+    align-items: center;
+    position: relative;
     padding: 16px 12px;
     border-bottom: 2px solid #14213d;
+    justify-content: space-between;
 }
-.header h3 {
+.header::after {
+    content: 'shashwat';
+    display: none;
+}
+.header:hover .header::after {
+    display: block;
+}
+.logo {
+    display: flex;
+    column-gap: 8px;
+}
+.logo img {
+    height: 26px;
+}
+.logo h3 {
     margin: 0;
 }
-.header span {
-    color: #fff;
+.navItems {
+    /* position: absolute; */
+    text-align: left;
+    top: 0;
+    right: 0;
 }
-.header span a {
-    color: #fff;
+.navItems ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
 }
-.underlined {
-    color: black !important;
-    flex: 1;
-    background-image: linear-gradient(to right, rgba(155, 154, 151, 0.4) 0, rgba(155, 154, 151, 0.4) 100%);
-    background-position: 0 1.2em;
-    background-size: 0 100%;
-    background-repeat: no-repeat;
-    transition: background .5s;
+.navItem {
+    width: max-content;
+    position: relative;
+    cursor: pointer;
+    margin-left: 1rem;
 }
-.underlined:hover {
-    background-size: 100% 100%;
+.navItem::after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #000;
+    transform: scaleX(0);
+
+    transition: transform 500ms ease;
 }
-.underlinedReverse {
-    background-position: 100% -0.1em;
-    transition: background 0.8s;
-    background-image: linear-gradient(to right, rgba(155, 154, 151, 0.4) 0, rgba(155, 154, 151, 0.4) 100%);
+.navItem:hover::after {
+    transform: scaleX(1);
 }

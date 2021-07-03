@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Components
 import Modal from "../components/Modal";
 
 // Utils
-import { updateTaskValue } from 'public/utils';
+import { updateTaskValue, getTaskObj } from 'public/utils';
 
 // Styles
 import s from "../styles/TaskModal.module.css";
 
-function TaskModal({ onClose, taskObj, state, setState }) {
-  const titleRef = useRef('');
-  const { task, groupId, title, description } = taskObj;
+function TaskModal({ onClose, meta, state, setState }) {
+  const titleRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const { taskId, groupId } = meta;
+  const taskObj = getTaskObj(state, groupId, taskId);
+  const { title, description } = taskObj;
 
   const handleInput = (groupId = '', taskId = '', key) => (event) => {
     event.stopPropagation();
@@ -23,10 +26,12 @@ function TaskModal({ onClose, taskObj, state, setState }) {
   }
 
   useEffect(() => {
-    if (!task?.title && titleRef.current) {
-      titleRef.current.focus();
+    if (!title) {
+      setTimeout(() => titleRef.current.focus(), 0);
+    } else if (!description) {
+      setTimeout(() => descriptionRef.current.focus(), 0);
     }
-  }, [title, titleRef.current]);
+  }, []);
 
   return (
   <Modal show onClose={onClose}>
@@ -37,17 +42,20 @@ function TaskModal({ onClose, taskObj, state, setState }) {
           name="newTitle"
           placeholder="Untitled"
           autoComplete="off"
-          onBlur={handleInput(groupId, task?.id, 'title')}
+          onBlur={handleInput(groupId, taskId, 'title')}
         />
       </div>
-    ) : (<h1 className={s.title}>{title}</h1>)}
+    ) : (
+    <h1 className={s.title}>{title}</h1>
+    )}
     {!description ? (
       <div className={`${s.wrapper} ${s.descriptionInput}`}>
         <input
+          ref={descriptionRef}
           name="newDesc"
           placeholder="Start typing description..."
           autoComplete="off"
-          onBlur={handleInput(groupId, task?.id, 'description')}
+          onBlur={handleInput(groupId, taskId, 'description')}
         />
       </div>
     ) : (<div className={s.modalBody}>{description}</div>)}
@@ -55,3 +63,17 @@ function TaskModal({ onClose, taskObj, state, setState }) {
 }
 
 export default TaskModal;
+
+
+
+// For contentEditable in h1 tag for onBlur event
+//
+// const handleEditableContent = (groupId = '', taskId = '', key) => (event) => {
+//   event.stopPropagation();
+//   const { textContent, attributes } = event.target;
+//   const name = attributes.getNamedItem('name').value;
+//   if ((name === 'title' || name === 'newDesc') && textContent) {
+//     const newState = updateTaskValue(state, groupId, taskId, key, textContent);
+//     setState(newState);
+//   }
+// }

@@ -58,10 +58,21 @@ const updateTaskValue = (state, groupId, taskId, key = '', value = '') => {
   });
 }
 
+const getTaskObj = (state, groupId, taskId) => {
+  try {
+    const groupCtx = state.find(group => group.id === groupId);
+    const taskCtx = groupCtx.tasks.find(task => task.id === taskId);
+    return taskCtx;
+  } catch {
+    return undefined;
+  }
+}
+
 export {
   getEmptyTask,
   getEmptyGroup,
   reorder,
   move,
   updateTaskValue,
+  getTaskObj,
 }
