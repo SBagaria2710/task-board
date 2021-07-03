@@ -173,10 +173,8 @@ function Canvas() {
         { ...taskModal, 
           show: true, 
           info: {
-            title: task.title,
-            description: task.description,
             groupId,
-            task,
+            taskId: task.id,
           }
       });
     }
@@ -221,7 +219,7 @@ function Canvas() {
 
   return (
     <div className={s.taskBoard}>
-      {taskModal.show && <TaskModal onClose={() => setTaskModal(initialModalData)} taskObj={taskModal?.info} state={state} setState={setState} />}
+      {taskModal.show && <TaskModal onClose={() => setTaskModal(initialModalData)} meta={taskModal?.info} state={state} setState={setState} />}
       <DragDropContext onDragEnd={onDragEnd}>
         {state.map(el => {
           const { id: groupId, name: groupName, colorHex, justCreated, tasks } = el;
@@ -284,7 +282,7 @@ function Canvas() {
                                     onKeyUp={handleKeyUp(groupId, task?.id)}
                                   />
                                 </div>
-                              ) : (task?.title || <span className={s.untitledTask}>Untitled</span>)}
+                              ) : (task?.title ? <p className={s.title}>{task?.title}</p> : <span className={s.untitledTask}>Untitled</span>)}
                             </Card>
                           </div>
                         )}

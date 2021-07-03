@@ -33,6 +33,13 @@
 .deleteIcon:hover{
     background: rgba(55, 53, 47, 0.08);
 }
+.title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 90%;
+    margin: 0;
+}
 .newTitleWrapper {
     display: flex;
     height: 24px;
@@ -46,6 +53,7 @@
 .newTaskTitleWrapper {
     box-shadow: none;
     background: none;
+    width: 90%;
 }
 .newGroupTitleWrapper {
     margin: 1rem auto;
