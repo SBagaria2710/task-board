@@ -8,7 +8,6 @@ import {
 
 // Components
 import Card from "./Card";
-import Modal from "./Modal";
 import Tooltip from "./Tooltip";
 import TaskModal from "../Modals/TaskModal";
 import Image from 'next/image';
@@ -219,7 +218,15 @@ function Canvas() {
 
   return (
     <div className={s.taskBoard}>
-      {taskModal.show && <TaskModal onClose={() => setTaskModal(initialModalData)} meta={taskModal?.info} state={state} setState={setState} />}
+      {taskModal.show && (
+        <TaskModal 
+          state={state}
+          setState={setState}
+          meta={taskModal?.info}
+          handleDeleteTask={handleDeleteCard(taskModal?.info.groupId, taskModal?.info.taskId)}
+          onClose={() => setTaskModal(initialModalData)}
+        />
+      )}
       <DragDropContext onDragEnd={onDragEnd}>
         {state.map(el => {
           const { id: groupId, name: groupName, colorHex, tasks, canDelete } = el;

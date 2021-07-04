@@ -1,6 +1,37 @@
 .modalBody {
   padding-top: 10px;
 }
+.actionContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(55, 53, 47, 0.4);
+  border-radius: 4px;
+  background-color: rgba(55, 53, 47, 0.1);
+  padding: 8px 12px;
+}
+.actionTitle {
+  margin-block: 0;
+  color: rgba(55, 53, 47, 0.8);
+}
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+.deleteBtn:hover {
+  cursor: pointer;
+  background: rgba(55, 53, 47, 0.08);
+}
+.deleteBtn img {
+  min-width: 18px !important;
+  min-height: 18px !important;
+}
+.deleteBtn div {
+  margin-left: 0.5rem;
+}
 .title {
   font-size: 2.5rem;
   white-space: pre-wrap;
@@ -38,6 +69,7 @@
 .descriptionInput input:focus {
   outline: 0;
 }
+
 
 
 @media only screen and (max-width: 600px) {
