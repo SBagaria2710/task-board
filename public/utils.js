@@ -9,9 +9,10 @@ const getEmptyTask = () => ({
   description: '',
 });
 
-const getEmptyGroup = (name = '') => ({
+const getEmptyGroup = (name = '', canDelete = true) => ({
 id: `group${getId()}`,
 name,
+canDelete,
 colorHex: '',
 tasks: [],
 });

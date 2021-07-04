@@ -61,7 +61,7 @@ const getListStyle = (isDraggingOver) => ({
 function Canvas() {
   const groupInputRef = useRef('');
   const taskInputRef = useRef('');
-  const [state, setState] = useState([]);
+  const [state, setState] = useState([getEmptyGroup('No Status', false)]);
   const [taskModal, setTaskModal] = useState(initialModalData);
   const [isEditingNewGroupName, setIsEditingNewGroupName] = useState(false);
   const [newTask, setNewTask] = useState(initialNewTaskData);
@@ -150,7 +150,7 @@ function Canvas() {
     }
   }
 
-  const handleInput = (groupId = '', taskId = '') => (event) => {
+  const handleInput = (groupId = '', taskId = '') => event => {
     event.stopPropagation();
     const { value, name } = event.target;
     if (name === 'newGroupTitle') {
@@ -167,14 +167,14 @@ function Canvas() {
     }
   }
 
-  const openModal = (task, groupId) => () => {
+  const openModal = (taskId, groupId) => () => {
     if (!newTask?.isAdding) {
       setTaskModal(
         { ...taskModal, 
           show: true, 
           info: {
             groupId,
-            taskId: task.id,
+            taskId,
           }
       });
     }
@@ -192,7 +192,7 @@ function Canvas() {
     }
   }, [newTask.isAdding]);
 
-  //Data Persistance
+  // Data Persistance
   useEffect(() => {
     const stateData = localStorage.getItem('task-board-state');
     const modalData = localStorage.getItem('modal-state');
@@ -222,12 +222,12 @@ function Canvas() {
       {taskModal.show && <TaskModal onClose={() => setTaskModal(initialModalData)} meta={taskModal?.info} state={state} setState={setState} />}
       <DragDropContext onDragEnd={onDragEnd}>
         {state.map(el => {
-          const { id: groupId, name: groupName, colorHex, justCreated, tasks } = el;
+          const { id: groupId, name: groupName, colorHex, tasks, canDelete } = el;
           return (
           <Droppable key={groupId} droppableId={groupId}>
             {(provided, snapshot) => (
               <div className={s.taskStackContainer}>
-                <div className={s.groupContainer}>
+                <div className={`${s.groupContainer} ${!canDelete && s.noStatusColumn}`}>
                   <p className={s.groupTitle}>
                     {groupName}
                     <span>{tasks.length}</span>
@@ -235,13 +235,13 @@ function Canvas() {
                   <Tooltip tooltipText="Create New Group" placement='top'>
                     <button onClick={toggleNewTask(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   </Tooltip>
-                  <button
+                  {canDelete && <button
                     className={`${cardStyles.deleteBtn} ${s.deleteIcon}`}
                     type="button"
                     onClick={handleDeleteGroup(groupId)}
                   >
                     <Image src={DeleteIcon} alt="Delete Icon" width={12} height={20} /> 
-                  </button>
+                  </button>}
                 </div>
                 <div
                   ref={provided.innerRef}
@@ -268,7 +268,8 @@ function Canvas() {
                           >
                             <Card
                               handleDeleteTask={handleDeleteCard(groupId, task?.id)}
-                              onClick={openModal(task, groupId)}
+                              onClick={openModal(task?.id, groupId)}
+                              task={task}
                             >
                               {task?.isNew ? (
                                 <div className={`${s.newTitleWrapper} ${s.newTaskTitleWrapper}`}>

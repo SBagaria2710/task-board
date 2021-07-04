@@ -12,6 +12,9 @@
     align-items:center;
     grid-template-columns: 8fr 1fr 1fr;
 }
+.noStatusColumn {
+    grid-template-columns: 9fr 1fr;
+}
 .groupTitle {
     padding: 0 8px;
     font-size: 1rem;
