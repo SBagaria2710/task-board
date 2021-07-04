@@ -2,6 +2,10 @@ import React, { useEffect, useRef } from 'react';
 
 // Components
 import Modal from "../components/Modal";
+import Image from 'next/image';
+
+// Icon
+import DeleteIcon from 'public/assets/icons/delete-icon.png';
 
 // Utils
 import { updateTaskValue, getTaskObj } from 'public/utils';
@@ -9,7 +13,7 @@ import { updateTaskValue, getTaskObj } from 'public/utils';
 // Styles
 import s from "../styles/TaskModal.module.css";
 
-function TaskModal({ onClose, meta, state, setState }) {
+function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const { taskId, groupId } = meta;
@@ -25,6 +29,11 @@ function TaskModal({ onClose, meta, state, setState }) {
     }
   }
 
+  const deleteTaskAndCloseModal = (event) => {
+    handleDeleteTask(event);
+    onClose();
+  }
+
   useEffect(() => {
     if (!title) {
       setTimeout(() => titleRef.current.focus(), 0);
@@ -35,6 +44,13 @@ function TaskModal({ onClose, meta, state, setState }) {
 
   return (
   <Modal show onClose={onClose}>
+    <div className={s.actionContainer}>
+      <p className={s.actionTitle}>Actions</p>
+      <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
+        Delete Task
+        <Image src={DeleteIcon} alt="Delete Icon" width={14} height={20} /> 
+      </button>
+    </div>
     {!title ? (
       <div className={`${s.wrapper} ${s.titleInput}`}>
         <input
@@ -66,7 +82,7 @@ export default TaskModal;
 
 
 
-// For contentEditable in h1 tag for onBlur event
+// For contentEditable using onBlur event
 //
 // const handleEditableContent = (groupId = '', taskId = '', key) => (event) => {
 //   event.stopPropagation();
