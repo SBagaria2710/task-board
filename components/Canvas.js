@@ -22,7 +22,7 @@ import { initialModalData, initialNewTaskData } from 'public/constants';
 import DeleteIcon from 'public/assets/icons/deleteIcon.js';
 
 // Styles
-import s from "../styles/Canvas.module.css";TaskModal
+import s from "../styles/Canvas.module.css";
 import cardStyles from "../styles/Card.module.css";
 
 const getItemStyle = (snapshot, isDragging, draggableStyle) => ({

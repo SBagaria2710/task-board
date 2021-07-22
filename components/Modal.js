@@ -13,7 +13,7 @@ import { useKeyPress, useOutsideClick } from "../hooks";
 // Style
 import s from "../styles/Modal.module.css";
 
-function Modal({ show, onClose, children, title }) {
+function Modal({ show, onClose, children, modalClass, modalContentClass }) {
   const ref = useRef();
   useKeyPress('Escape', () => onClose());
   useOutsideClick(ref, () => onClose());
@@ -32,13 +32,13 @@ function Modal({ show, onClose, children, title }) {
 
   const modalContent = show ? (
     <div className={s.modalOverlay}>
-      <div className={s.modal} ref={ref}>
+      <div className={`${s.modal} ${modalClass}`} ref={ref}>
         <div className={s.modalHeader}>
           <div onClick={handleCloseClick}>
             <CrossIcon alt="Cross Icon" />
           </div>
         </div>
-        <div className={s.modalContent}>
+        <div className={`${s.modalContent} ${modalContentClass}`}>
           {children}
         </div>
       </div>

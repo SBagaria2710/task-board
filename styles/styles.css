@@ -378,6 +378,9 @@ body[data-theme="dark"] {
 body[data-theme="dark"] svg {
   fill: white;
 }
+body[data-theme="dark"] a {
+  color: #BB86FC;
+}
 @media (prefers-color-scheme: dark) {
   body {
     background: #121212;
