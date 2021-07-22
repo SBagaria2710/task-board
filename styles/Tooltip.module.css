@@ -9,12 +9,12 @@
   opacity: 0;
   font-size: 0.75rem;
   white-space: nowrap;
-  color: #fff;
   padding: 4px 6px;
   display: flex;
   align-items: center;
   border-radius: 4px;
   transition: all 250ms;
+  color: #fff;
   background-color: rgba(0,0,0,0.8);
   z-index: 999;
 }

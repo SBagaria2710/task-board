@@ -1,4 +1,5 @@
 import Head from 'next/head';
+// import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 // Styles
 import '../styles/styles.css';

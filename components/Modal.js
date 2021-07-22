@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import Image from 'next/image';
 
 // Icon
-import CrossIcon from 'public/assets/icons/cross.png';
+import CrossIcon from 'public/assets/icons/crossIcon.js';
 
 //Hooks
 import { useKeyPress, useOutsideClick } from "../hooks";
@@ -35,7 +35,7 @@ function Modal({ show, onClose, children, title }) {
       <div className={s.modal} ref={ref}>
         <div className={s.modalHeader}>
           <div onClick={handleCloseClick}>
-            <Image src={CrossIcon} alt="Cross Icon" width={20} height={20} />
+            <CrossIcon alt="Cross Icon" />
           </div>
         </div>
         <div className={s.modalContent}>

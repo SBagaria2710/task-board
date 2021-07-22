@@ -5,7 +5,7 @@ import Modal from "../components/Modal";
 import Image from 'next/image';
 
 // Icon
-import DeleteIcon from 'public/assets/icons/delete-icon.png';
+import DeleteIcon from 'public/assets/icons/deleteIcon.js';
 
 // Utils
 import { updateTaskValue, getTaskObj } from 'public/utils';
@@ -48,7 +48,7 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
       <p className={s.actionTitle}>Actions</p>
       <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
         Delete Task
-        <Image src={DeleteIcon} alt="Delete Icon" width={14} height={20} /> 
+        <DeleteIcon />
       </button>
     </div>
     {!title ? (

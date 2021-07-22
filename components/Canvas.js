@@ -8,9 +8,9 @@ import {
 
 // Components
 import Card from "./Card";
+import Toggle from "./Toggle";
 import Tooltip from "./Tooltip";
 import TaskModal from "../Modals/TaskModal";
-import Image from 'next/image';
 
 // Utils
 import { getEmptyTask, getEmptyGroup, updateTaskValue, move, reorder } from 'public/utils';
@@ -19,7 +19,7 @@ import { getEmptyTask, getEmptyGroup, updateTaskValue, move, reorder } from 'pub
 import { initialModalData, initialNewTaskData } from 'public/constants';
 
 // Icon
-import DeleteIcon from 'public/assets/icons/delete-icon.png';
+import DeleteIcon from 'public/assets/icons/deleteIcon.js';
 
 // Styles
 import s from "../styles/Canvas.module.css";TaskModal
@@ -45,7 +45,7 @@ const getItemStyle = (snapshot, isDragging, draggableStyle) => ({
   padding: "8px 10px 10px",
 
   // change background colour and cursor if dragging
-  background: isDragging ? "rgba(55, 53, 47, 0.03)" : "white",
+  background: isDragging ? "rgba(var(--secondary-color), 0.03)" : "white",
   cursor: isDragging ? "drag" : "pointer",
 
   // styles we need to apply on draggables
@@ -58,6 +58,7 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function Canvas() {
+  const [toggled, setToggled] = useState(false);
   const groupInputRef = useRef('');
   const taskInputRef = useRef('');
   const [state, setState] = useState([getEmptyGroup('No Status', false)]);
@@ -247,7 +248,7 @@ function Canvas() {
                     type="button"
                     onClick={handleDeleteGroup(groupId)}
                   >
-                    <Image src={DeleteIcon} alt="Delete Icon" width={12} height={20} /> 
+                    <DeleteIcon alt="Delete Icon" />
                   </button>}
                 </div>
                 <div

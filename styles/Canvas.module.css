@@ -18,12 +18,11 @@
 .groupTitle {
     padding: 0 8px;
     font-size: 1rem;
-    color: rgb(55, 53, 47);
 }
 .groupTitle span {
     margin-left: 8px;
     font-size: 1rem;
-    color: rgba(55, 53, 47, 0.4);
+    color: rgba(var(--secondary-color), 0.4);
 }
 .deleteIcon {
     text-align: left;
@@ -34,12 +33,13 @@
     min-height: 18px !important;
 }
 .deleteIcon:hover{
-    background: rgba(55, 53, 47, 0.08);
+    background: rgba(var(--secondary-color), 0.08);
 }
 .title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: var(--dark-color);
     width: 90%;
     margin: 0;
 }
@@ -78,10 +78,10 @@
     outline: 0;
 }
 .untitledTask {
-    caret-color: rgb(55, 53, 47);
+    caret-color: rgb(128,128,128);
     font-weight: 500;
-    color: rgb(55, 53, 47);
-    -webkit-text-fill-color: rgba(55, 53, 47, 0.4);
+    color: rgb(128,128,128);
+    -webkit-text-fill-color: rgba(128,128,128, 0.8);
   }
 .addNewTask {
     height: 32px;
@@ -94,12 +94,12 @@
     border-radius: 4px;
     font-size: 0.875rem;
     padding: 0 8px;
-    color: rgba(55, 53, 47, 0.4);
+    color: rgba(var(--secondary-color), 0.4);
     background: none;
     transition: background 200ms ease-in-out 0s;
 }
 .addNewTask:hover{
-    background: rgba(55, 53, 47, 0.08);
+    background: rgba(var(--secondary-color), 0.08);
 }
 .addNewTaskPlus {
     font-size: 24px;
