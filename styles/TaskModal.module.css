@@ -5,14 +5,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgba(55, 53, 47, 0.4);
+  border: 1px solid rgba(var(--secondary-color), 0.4);
   border-radius: 4px;
-  background-color: rgba(55, 53, 47, 0.1);
+  background-color: rgba(var(--secondary-color), 0.1);
   padding: 8px 12px;
 }
 .actionTitle {
   margin-block: 0;
-  color: rgba(55, 53, 47, 0.8);
+  color: rgba(var(--secondary-color), 0.8);
 }
 .deleteBtn {
   display: flex;
@@ -20,14 +20,15 @@
   border: none;
   border-radius: 4px;
   font-size: 0.875rem;
+  padding: 4px 8px;
 }
 .deleteBtn:hover {
   cursor: pointer;
-  background: rgba(55, 53, 47, 0.08);
+  background: rgba(var(--secondary-color), 0.08);
 }
-.deleteBtn img {
-  min-width: 18px !important;
-  min-height: 18px !important;
+.deleteBtn svg {
+  margin-left: 8px;
+  width: 20px !important;
 }
 .deleteBtn div {
   margin-left: 0.5rem;
@@ -36,9 +37,8 @@
   font-size: 2.5rem;
   white-space: pre-wrap;
   word-break: break-word;
-  caret-color: rgb(55, 53, 47);
-  color: rgb(55, 53, 47);
-  /* -webkit-text-fill-color: rgba(55, 53, 47, 0.15); */
+  caret-color: rgb(var(--secondary-color));
+  color: rgb(var(--secondary-color));
 }
 .wrapper {
   display: flex;
@@ -47,8 +47,12 @@
   border-radius: 4px;
   white-space: pre-wrap;
   word-break: break-word;
-  caret-color: rgb(55, 53, 47);
+  caret-color: rgb(var(--secondary-color));
   border: none;
+}
+.wrapper input {
+  background-color: var(--background-color);
+  color: var(--color-switch);
 }
 .titleInput input {
   font-size: 2.5rem;

@@ -3,10 +3,17 @@
   justify-content: space-between;
   font-size: 0.875rem;
 }
+.card svg {
+  fill: #000 !important;
+}
 
 .deleteBtn {
   background-color: transparent;
   border: none;
+}
+
+.deleteBtn svg {
+  width: 20px;
 }
 
 .deleteBtn :hover {

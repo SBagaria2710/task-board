@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 // Icon
-import DeleteIcon from 'public/assets/icons/delete-icon.png';
+import DeleteIcon from 'public/assets/icons/deleteIcon.js';
 
 // Style
 import s from "../styles/Card.module.css";
@@ -14,7 +14,7 @@ const Card = ({ handleDeleteTask, children, onClick, task }) => (
       type="button"
       onClick={(event) => handleDeleteTask(event)}
     >
-      <Image src={DeleteIcon} alt="Delete Icon" width={20} height={20} />
+      <DeleteIcon alt="Delete ICon" />
     </button>
   </div>
 );

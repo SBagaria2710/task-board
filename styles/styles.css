@@ -19,14 +19,6 @@ html {
      ========================================================================== */
 
 /**
-   * Remove the margin in all browsers.
-   */
-
-body {
-  margin: 0;
-}
-
-/**
    * Render the `main` element consistently in IE.
    */
 
@@ -358,6 +350,37 @@ body {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.8;
-  color: #333;
   font-family: sans-serif;
+}
+
+
+:root {
+  --light-color: #ffffff;
+  --dark-color: #020210;
+  --secondary-color: 55, 53, 47;
+  --background-color: var(--light-color);
+}
+
+body,
+body[data-theme="light"] {
+  --color-switch: var(--dark-color);
+  transition: all 0.2s ease-in-out;
+  background-color: var(--background-color);
+  color: var(--dark-color);
+}
+body[data-theme="dark"] {
+  --color-switch: var(--light-color);
+  --secondary-color: 255, 255, 255;
+  --background-color: var(--dark-color);
+  background-color: var(--background-color);;
+  color: var(--light-color);;
+}
+body[data-theme="dark"] svg {
+  fill: white;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: white;
+  }
 }

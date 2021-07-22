@@ -3,8 +3,9 @@
   justify-content: flex-end;
   font-size: 1.5rem;
 }
-.modalHeader img {
+.modalHeader svg {
   cursor: pointer;
+  width: 20px;
 }
 .modal {
   width: 100%;
@@ -13,7 +14,9 @@
   border-radius: 2px;
   padding: 24px;
   margin: 0 auto;
-  background: white;
+  background: var(--background-color);
+  border: 1px solid rgba(var(--secondary-color), 0.4);
+  /* border: 1px solid var(--color-switch); */
   box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 5px 10px, rgb(15 15 15 / 20%) 0px 15px 40px;
   overflow: scroll;
 }
