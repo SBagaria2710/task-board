@@ -58,7 +58,6 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function Canvas() {
-  const [toggled, setToggled] = useState(false);
   const groupInputRef = useRef('');
   const taskInputRef = useRef('');
   const [state, setState] = useState([getEmptyGroup('No Status', false)]);
@@ -100,6 +99,7 @@ function Canvas() {
   const handleDeleteGroup = (groupId) => () => {
     const newState = state.filter(group => !(group.id === groupId));
     setState(newState);
+    toast.success('Group deleted successfully');
   };
 
   const handleDeleteCard = (groupId, taskId) => (event) => {
@@ -157,6 +157,7 @@ function Canvas() {
     if (name === 'newGroupTitle') {
       if (value) {
         setState([...state, getEmptyGroup(value)]);
+        toast.success(`New Group Added: ${value}`);
         toggleIsEditingNewGroupName();
       } else {
         toggleIsEditingNewGroupName();
@@ -216,12 +217,11 @@ function Canvas() {
 
   useEffect(() => {
     resetServerContext();
-    toast(() => (
+    toast(
       <span>
         Built by&nbsp;
         <a href={socialLink.linkedIn} target="_blank">Shashwat Bagaria</a>
-      </span>
-    ), {
+      </span>, {
       duration: 27000,
       icon: '🕺',
       ariaProps: {
@@ -254,7 +254,7 @@ function Canvas() {
                     {groupName}
                     <span>{tasks.length}</span>
                   </p>
-                  <Tooltip tooltipText="Create New Group" placement='top'>
+                  <Tooltip tooltipText="Add new task" placement='top'>
                     <button onClick={toggleNewTask(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   </Tooltip>
                   {canDelete && <button

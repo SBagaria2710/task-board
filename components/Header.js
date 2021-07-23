@@ -33,20 +33,20 @@ function Header () {
     }, [toggled]);
 
     useEffect(() => {
-        const themeData = localStorage.getItem('theme');
+        const theme = localStorage.getItem('default-theme');
         try {
-          if (themeData) {
-            document.body.dataset.theme = JSON.parse(themeData);
+          if (theme) {
+            document.body.dataset.theme = theme;
+            if (theme === 'dark') handleToggle();
           }
         } catch(e) {
           console.error('ERROR: ', e);
         }
-      }, []);
-
+    }, []);
     return (
         <>
             {aboutModal && <AboutModal onClose={handleAboutModalToggle} />}
-            {/* {settingsModal && <SettingsModal onClose={handleSettingsModalToggle} />} */}
+            {settingsModal && <SettingsModal onClose={handleSettingsModalToggle} />}
             <header className={s.header}>
                 <div className={s.logo}>
                     <TaskBoardIcon alt="Logo Icon" />
@@ -54,9 +54,7 @@ function Header () {
                 </div>
                 <nav className={s.navItems}>
                     <ul>
-                        <li>
-                            <Toggle toggled={toggled} onClick={handleToggle} />
-                        </li>
+                        <li><Toggle toggled={toggled} onClick={handleToggle} /></li>
                         <li className={s.navItem} onClick={handleAboutModalToggle}>About</li>
                         <li className={s.navItem} onClick={handleSettingsModalToggle}>Settings</li>
                     </ul>

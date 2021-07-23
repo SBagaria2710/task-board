@@ -9,8 +9,7 @@ import { socialLink } from 'public/constants';
 // Styles
 import s from "../styles/AboutModal.module.css";
 
-function AboutModal({ onClose }) {
-  return (
+const AboutModal = ({ onClose }) => (
   <Modal show onClose={onClose} modalClass={s.modalClass} modalContentClass={s.modalContentClass}>
     <div className={s.wrapper}>
       <div className={s.container}>
@@ -28,7 +27,7 @@ function AboutModal({ onClose }) {
         </div>
       </div>
     </div>
-  </Modal>);
-}
+  </Modal>
+);
 
 export default AboutModal;
