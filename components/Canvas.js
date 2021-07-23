@@ -58,7 +58,6 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function Canvas() {
-  const [toggled, setToggled] = useState(false);
   const groupInputRef = useRef('');
   const taskInputRef = useRef('');
   const [state, setState] = useState([getEmptyGroup('No Status', false)]);
@@ -158,6 +157,7 @@ function Canvas() {
     if (name === 'newGroupTitle') {
       if (value) {
         setState([...state, getEmptyGroup(value)]);
+        toast.success(`New Group Added: ${value}`);
         toggleIsEditingNewGroupName();
       } else {
         toggleIsEditingNewGroupName();
@@ -217,12 +217,11 @@ function Canvas() {
 
   useEffect(() => {
     resetServerContext();
-    toast(() => (
+    toast(
       <span>
         Built by&nbsp;
         <a href={socialLink.linkedIn} target="_blank">Shashwat Bagaria</a>
-      </span>
-    ), {
+      </span>, {
       duration: 27000,
       icon: '🕺',
       ariaProps: {
