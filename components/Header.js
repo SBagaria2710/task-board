@@ -45,7 +45,7 @@ function Header () {
 
     return (
         <>
-            {!aboutModal && <AboutModal onClose={handleAboutModalToggle} />}
+            {aboutModal && <AboutModal onClose={handleAboutModalToggle} />}
             {/* {settingsModal && <SettingsModal onClose={handleSettingsModalToggle} />} */}
             <header className={s.header}>
                 <div className={s.logo}>

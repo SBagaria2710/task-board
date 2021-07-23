@@ -14,7 +14,7 @@ const Card = ({ handleDeleteTask, children, onClick, task }) => (
       type="button"
       onClick={(event) => handleDeleteTask(event)}
     >
-      <DeleteIcon alt="Delete ICon" />
+      <DeleteIcon alt="Delete Icon" />
     </button>
   </div>
 );

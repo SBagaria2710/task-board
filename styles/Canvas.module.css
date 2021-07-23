@@ -39,7 +39,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: var(--dark-color);
+    color: var(--color-switch);
     width: 90%;
     margin: 0;
 }
@@ -73,6 +73,7 @@
     display: block;
     resize: none;
     padding: 0px;
+    color: var(--color-switch);
 }
 .newGroupTitle:focus {
     outline: 0;

@@ -4,7 +4,8 @@
   font-size: 0.875rem;
 }
 .card svg {
-  fill: #000 !important;
+  fill: var(--color-switch);
+  -webkit-text-fill-color: rgba(128,128,128, 0.8);
 }
 
 .deleteBtn {
