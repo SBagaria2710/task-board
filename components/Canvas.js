@@ -45,7 +45,7 @@ const getItemStyle = (snapshot, isDragging, draggableStyle) => ({
   padding: "8px 10px 10px",
 
   // change background colour and cursor if dragging
-  background: isDragging ? "rgba(var(--secondary-color), 0.03)" : "white",
+  background: isDragging ? "rgba(var(--card-color), 0.8)" : "rgb(var(--card-color))",
   cursor: isDragging ? "drag" : "pointer",
 
   // styles we need to apply on draggables
