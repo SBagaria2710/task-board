@@ -1,7 +1,8 @@
 .modalClass {
   max-width: 400px;
   width: fit-content;
-  height: calc(100% - 350px);
+  height: fit-content;
+  /* height: calc(100% - 350px); */
 }
 .modalContentClass {
   padding: 0;
@@ -19,8 +20,13 @@
   grid-template-rows: 1fr 2fr;
   grid-gap: 20px 0;
 }
-.version {
+.container h1 {
   grid-column: 1/3;
+}
+.container p {
+  margin-top: 0;
+}
+.creator {
   font-size: 2rem;
   font-weight: 600;
   color: var(--secondary-color);
