@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 // Components
 import Modal from "../components/Modal";
@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 // Icon
 import DeleteIcon from 'public/assets/icons/deleteIcon.js';
+import SaveIcon from 'public/assets/icons/saveIcon.js';
+import EditIcon from 'public/assets/icons/editIcon.js';
 
 // Utils
 import { updateTaskValue, getTaskObj } from 'public/utils';
@@ -19,6 +21,7 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   const { taskId, groupId } = meta;
   const taskObj = getTaskObj(state, groupId, taskId);
   const { title, description } = taskObj;
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleInput = (groupId = '', taskId = '', key) => (event) => {
     event.stopPropagation();
@@ -28,6 +31,10 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
       setState(newState);
     }
   }
+
+  const toggleEditMode = () => {
+    setIsEditMode((isEditMode) => !isEditMode);
+};
 
   const deleteTaskAndCloseModal = (event) => {
     handleDeleteTask(event);
@@ -46,31 +53,41 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   <Modal show onClose={onClose}>
     <div className={s.actionContainer}>
       <p className={s.actionTitle}>Actions</p>
-      <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
-        Delete Task
-        <DeleteIcon />
-      </button>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button onClick={toggleEditMode} className={s.deleteBtn}>
+          {isEditMode ? 'Save' : 'Edit'}
+          {isEditMode ? <SaveIcon /> : <EditIcon />}
+        </button>
+        <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
+          Delete Task
+          <DeleteIcon />
+        </button>
+      </div>
     </div>
-    {!title ? (
+    {(!title) ? (
       <div className={`${s.wrapper} ${s.titleInput}`}>
         <input
           ref={titleRef}
           name="newTitle"
           placeholder="Untitled"
           autoComplete="off"
+          value={title}
+          // onChange={handleInput(groupId, taskId, 'title')}
           onBlur={handleInput(groupId, taskId, 'title')}
         />
       </div>
     ) : (
     <h1 className={s.title}>{title}</h1>
     )}
-    {!description ? (
+    {(!description) ? (
       <div className={`${s.wrapper} ${s.descriptionInput}`}>
         <input
           ref={descriptionRef}
           name="newDesc"
           placeholder="Start typing description..."
           autoComplete="off"
+          value={description}
+          // onChange={handleInput(groupId, taskId, 'description')}
           onBlur={handleInput(groupId, taskId, 'description')}
         />
       </div>
