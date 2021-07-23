@@ -365,7 +365,7 @@ body {
 body,
 body[data-theme="light"] {
   --color-switch: var(--dark-color);
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s ease-in;
   background-color: var(--background-color);
   color: var(--dark-color);
 }

@@ -100,6 +100,7 @@ function Canvas() {
   const handleDeleteGroup = (groupId) => () => {
     const newState = state.filter(group => !(group.id === groupId));
     setState(newState);
+    toast.success('Group deleted successfully');
   };
 
   const handleDeleteCard = (groupId, taskId) => (event) => {
@@ -254,7 +255,7 @@ function Canvas() {
                     {groupName}
                     <span>{tasks.length}</span>
                   </p>
-                  <Tooltip tooltipText="Create New Group" placement='top'>
+                  <Tooltip tooltipText="Add new task" placement='top'>
                     <button onClick={toggleNewTask(groupId)} className={`${s.addNewTask} ${s.addNewTaskPlus}`}>+</button>
                   </Tooltip>
                   {canDelete && <button
