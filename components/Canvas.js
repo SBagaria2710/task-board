@@ -8,15 +8,15 @@ import {
 
 // Components
 import Card from "./Card";
-import Toggle from "./Toggle";
 import Tooltip from "./Tooltip";
 import TaskModal from "../Modals/TaskModal";
+import toast, { Toaster } from 'react-hot-toast';
 
 // Utils
 import { getEmptyTask, getEmptyGroup, updateTaskValue, move, reorder } from 'public/utils';
 
 // Constants
-import { initialModalData, initialNewTaskData } from 'public/constants';
+import { initialModalData, initialNewTaskData, socialLink } from 'public/constants';
 
 // Icon
 import DeleteIcon from 'public/assets/icons/deleteIcon.js';
@@ -113,6 +113,7 @@ function Canvas() {
       return group;
     });
     setState(newState);
+    toast.success('Task deleted successfully');
   };
 
   const addTaskInGroup = (groupId) => {
@@ -215,6 +216,19 @@ function Canvas() {
 
   useEffect(() => {
     resetServerContext();
+    toast(() => (
+      <span>
+        Built by&nbsp;
+        <a href={socialLink.linkedIn} target="_blank">Shashwat Bagaria</a>
+      </span>
+    ), {
+      duration: 27000,
+      icon: '🕺',
+      ariaProps: {
+        role: 'status',
+        'aria-live': 'polite',
+      },
+    });
   }, []);
 
   return (
@@ -325,6 +339,17 @@ function Canvas() {
         </button>
         )}
       </DragDropContext>
+      <Toaster 
+        position="bottom-right"
+        gutter={10}
+        toastOptions={{
+          duration: 5000,
+          style: {
+            background: 'rgb(var(--card-color))',
+            color: 'var(--color-switch)',
+          },
+        }}
+      />
     </div>
   );
 }

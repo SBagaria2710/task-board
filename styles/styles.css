@@ -359,7 +359,7 @@ body {
   --dark-color: #020210;
   --secondary-color: 55, 53, 47;
   --background-color: whitesmoke;
-  --card-color: var(--light-color);
+  --card-color: 255, 255, 255;
 }
 
 body,

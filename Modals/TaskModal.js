@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Components
 import Modal from "../components/Modal";
-import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 // Icon
 import DeleteIcon from 'public/assets/icons/deleteIcon.js';
-import SaveIcon from 'public/assets/icons/saveIcon.js';
-import EditIcon from 'public/assets/icons/editIcon.js';
 
 // Utils
 import { updateTaskValue, getTaskObj } from 'public/utils';
@@ -21,7 +19,6 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   const { taskId, groupId } = meta;
   const taskObj = getTaskObj(state, groupId, taskId);
   const { title, description } = taskObj;
-  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleInput = (groupId = '', taskId = '', key) => (event) => {
     event.stopPropagation();
@@ -29,12 +26,20 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
     if ((name === 'newTitle' || name === 'newDesc') && value) {
       const newState = updateTaskValue(state, groupId, taskId, key, value);
       setState(newState);
+      toast.success(`${name === 'newTitle' ? 'Title' : 'Description'} added successfully`);
     }
   }
 
-  const toggleEditMode = () => {
-    setIsEditMode((isEditMode) => !isEditMode);
-};
+  const handleContentEditable = (groupId = '', taskId = '', key) => (event) => {
+    event.stopPropagation();
+    const { textContent, attributes } = event.target;
+    const name = attributes.getNamedItem('name')?.value;
+    if ((name === 'newTitle' || name === 'newDesc') && textContent) {
+      const newState = updateTaskValue(state, groupId, taskId, key, textContent);
+      setState(newState);
+      toast.success(`${name === 'newTitle' ? 'Title' : 'Description'} updated successfully`);
+    }
+  }
 
   const deleteTaskAndCloseModal = (event) => {
     handleDeleteTask(event);
@@ -53,16 +58,10 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   <Modal show onClose={onClose}>
     <div className={s.actionContainer}>
       <p className={s.actionTitle}>Actions</p>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <button onClick={toggleEditMode} className={s.deleteBtn}>
-          {isEditMode ? 'Save' : 'Edit'}
-          {isEditMode ? <SaveIcon /> : <EditIcon />}
-        </button>
-        <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
-          Delete Task
-          <DeleteIcon />
-        </button>
-      </div>
+      <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
+        Delete Task
+        <DeleteIcon />
+      </button>
     </div>
     {(!title) ? (
       <div className={`${s.wrapper} ${s.titleInput}`}>
@@ -71,13 +70,18 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
           name="newTitle"
           placeholder="Untitled"
           autoComplete="off"
-          value={title}
-          // onChange={handleInput(groupId, taskId, 'title')}
           onBlur={handleInput(groupId, taskId, 'title')}
         />
       </div>
     ) : (
-    <h1 className={s.title}>{title}</h1>
+    <h1 
+      name="newTitle"
+      contentEditable
+      suppressContentEditableWarning
+      onBlur={handleContentEditable(groupId, taskId, 'title')}
+      className={s.title}>
+        {title}
+    </h1>
     )}
     {(!description) ? (
       <div className={`${s.wrapper} ${s.descriptionInput}`}>
@@ -86,12 +90,18 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
           name="newDesc"
           placeholder="Start typing description..."
           autoComplete="off"
-          value={description}
-          // onChange={handleInput(groupId, taskId, 'description')}
           onBlur={handleInput(groupId, taskId, 'description')}
         />
       </div>
-    ) : (<div className={s.modalBody}>{description}</div>)}
+    ) : (
+    <div
+      name="newDesc"
+      contentEditable
+      suppressContentEditableWarning
+      onBlur={handleContentEditable(groupId, taskId, 'description')}
+      className={s.modalBody}>
+        {description}
+    </div>)}
   </Modal>);
 }
 

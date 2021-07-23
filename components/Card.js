@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 // Icon
 import DeleteIcon from 'public/assets/icons/deleteIcon.js';
 
