@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 // Components
 import Modal from "../components/Modal";
+import Tooltip from "../components/Tooltip";
 
 // Utils
 import { getEmptyGroup } from 'public/utils';
@@ -24,9 +26,17 @@ function SettingsModal({ onClose }) {
   };
 
   const resetBoard = () => {
-    localStorage.setItem('task-board-state', JSON.stringify([getEmptyGroup('No Status', false)]));
-    localStorage.setItem('modal-state', JSON.stringify(initialModalData));
-    location.reload();
+    const stateData = localStorage.getItem('task-board-state');
+    if (stateData) {
+      const parsedState = JSON.parse(stateData);
+      if(parsedState.length === 1 && !parsedState[0].tasks.length) {
+        toast.error('🙅‍♂️ Nothing to reset');
+      } else {
+        localStorage.setItem('task-board-state', JSON.stringify([getEmptyGroup('No Status', false)]));
+        localStorage.setItem('modal-state', JSON.stringify(initialModalData));
+        location.reload();
+      }
+    }
   };
 
   // Data Persistance
@@ -46,14 +56,19 @@ function SettingsModal({ onClose }) {
     <div className={s.container}>
       <div className={s.themeContainer}>
         <p className={s.title}>Default Theme</p>
-        <p className={s.subtitle}>(default theme on fresh load)</p>
+        <p className={s.subtitle}>(sets theme from next reload onwards)</p>
         <div className={s.theme} onClick={setDefaultTheme}>
           <div name="light" className={`${s.lightTheme} ${activeTheme === 'light' && s.active}`} />
           <div name="dark" className={`${s.darkTheme} ${activeTheme === 'dark' && s.active}`} />
         </div>
       </div>
       <hr />
-      Reset Board? <button className={s.dangerBtn} onClick={resetBoard}>Click here 😱</button>
+      <div className={s.resetBoard}>
+        Reset Board? 
+        <Tooltip tooltipText="Delete all tasks and groups" placement='top'>
+          <button className={s.dangerBtn} onClick={resetBoard}>Click here 😱</button>
+        </Tooltip>
+      </div>
     </div>
   </Modal>);
 }
