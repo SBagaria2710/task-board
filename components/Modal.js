@@ -18,10 +18,6 @@ function Modal({ show, onClose, children, modalClass, modalContentClass }) {
   useKeyPress('Escape', () => onClose());
   useOutsideClick(ref, () => onClose());
   const [isBrowser, setIsBrowser] = useState(false);
-  
-  useEffect(() => {
-    setIsBrowser(true);
-  }, []);
 
   const handleCloseClick = (e) => {
     e.preventDefault();
@@ -29,6 +25,10 @@ function Modal({ show, onClose, children, modalClass, modalContentClass }) {
       onClose();
     }
   };
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   const modalContent = show ? (
     <div className={s.modalOverlay}>

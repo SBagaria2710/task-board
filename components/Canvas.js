@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 import {
   DragDropContext,
   Droppable,
@@ -10,7 +11,6 @@ import {
 import Card from "./Card";
 import Tooltip from "./Tooltip";
 import TaskModal from "../Modals/TaskModal";
-import toast, { Toaster } from 'react-hot-toast';
 
 // Utils
 import { getEmptyTask, getEmptyGroup, updateTaskValue, move, reorder } from 'public/utils';

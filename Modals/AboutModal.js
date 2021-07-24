@@ -17,8 +17,17 @@ const AboutModal = ({ onClose }) => (
         <div className={s.about}>v1.0.0</div>
         <p>Manage your daily todos with this kanban style task board!</p>
       </div>
+      <table className={s.table}>
+        <tr>
+          <td>About</td>
+          <td><code>cmd/ctrl + a</code></td>
+        </tr>
+        <tr>
+          <td>Settings</td>
+          <td><code>cmd/ctrl + s</code></td>
+        </tr>
+      </table>
       <div>
-        <p style={{textAlign: 'center'}}>Feel free to connect and drop a suggestion 👇</p>
         <div className={s.socialLinkContainer}>
           <a href={socialLink.linkedIn} target="_blank">LinkedIn</a>
           <a href={socialLink.twitter} target="_blank">Twitter</a>

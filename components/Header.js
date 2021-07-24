@@ -16,6 +16,26 @@ function Header () {
     const [settingsModal, setSettingsModal] = useState(false);
     const [aboutModal, setAboutModal] = useState(false);
 
+    let meta_pressed = false;
+
+    const handleShortcut = (e) => {
+        if ( e.key === 'Meta' || e.ctrlKey ) {
+            meta_pressed = true;
+        } else if (meta_pressed && e.key === 's') {
+            e.preventDefault();
+            handleSettingsModalToggle();
+        } else if (meta_pressed && e.key === 'a') {
+            e.preventDefault();
+            handleAboutModalToggle();
+        }
+    }
+
+    const resetMetaPressed = e => {
+        if ( e.key === 'Meta' || e.ctrlKey ) {
+            meta_pressed = false;
+        }
+    }
+
     const handleAboutModalToggle = () => {
         setAboutModal((s) => !s);
     };
@@ -43,6 +63,16 @@ function Header () {
           console.error('ERROR: ', e);
         }
     }, []);
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleShortcut);
+        window.addEventListener('keyup', resetMetaPressed);
+        return () => {
+            window.removeEventListener('keydown', handleShortcut);
+            window.removeEventListener('keyup', resetMetaPressed);
+        };
+    }, []);
+
     return (
         <>
             {aboutModal && <AboutModal onClose={handleAboutModalToggle} />}

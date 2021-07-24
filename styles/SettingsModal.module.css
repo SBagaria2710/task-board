@@ -51,6 +51,10 @@
   left: 40px;
   top: 40px;
 }
+.resetBoard {
+  display: flex;
+  justify-content: space-between;
+}
 .dangerBtn {
   color: #fff;
   font-size: 0.875rem;
