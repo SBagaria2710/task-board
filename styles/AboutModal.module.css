@@ -17,7 +17,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
   grid-gap: 20px 0;
 }
 .container h1 {
@@ -34,11 +34,22 @@
 .about {
   text-decoration: underline;
 }
+.table {
+  border-collapse: collapse;
+  margin-bottom: 60px;
+}
+.table td {
+  border: 1px solid black;
+}
+.table td {
+  text-align: center;
+}
 .socialLinkContainer {
   display: flex;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 24px;
 }
 .socialLinkContainer a {
   position: relative;
@@ -46,7 +57,7 @@
 .socialLinkContainer a::after {
   content: '·';
   position: absolute;
-  right: -8px;
+  right: -14px;
 }
 .socialLinkContainer a:last-child::after {
   content: '';
