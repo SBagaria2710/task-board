@@ -24,7 +24,7 @@ function Header () {
         } else if (meta_pressed && e.key === 's') {
             e.preventDefault();
             handleSettingsModalToggle();
-        } else if (meta_pressed && e.key === 'a') {
+        } else if (meta_pressed && e.key === 'b') {
             e.preventDefault();
             handleAboutModalToggle();
         }

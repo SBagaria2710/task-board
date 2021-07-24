@@ -222,7 +222,7 @@ function Canvas() {
         Built by&nbsp;
         <a href={socialLink.linkedIn} target="_blank">Shashwat Bagaria</a>
       </span>, {
-      duration: 27000,
+      duration: 271096, //my birth date 🎂
       icon: '🕺',
       ariaProps: {
         role: 'status',

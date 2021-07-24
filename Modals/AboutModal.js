@@ -20,7 +20,7 @@ const AboutModal = ({ onClose }) => (
       <table className={s.table}>
         <tr>
           <td>About</td>
-          <td><code>cmd/ctrl + a</code></td>
+          <td><code>cmd/ctrl + b</code></td>
         </tr>
         <tr>
           <td>Settings</td>
