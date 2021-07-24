@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 // Components
 import Modal from "../components/Modal";
@@ -16,6 +16,7 @@ import s from "../styles/TaskModal.module.css";
 function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
+  const [isUpdated, setIsUpdated] = useState(false);
   const { taskId, groupId } = meta;
   const taskObj = getTaskObj(state, groupId, taskId);
   const { title, description } = taskObj;
@@ -27,6 +28,7 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
       const newState = updateTaskValue(state, groupId, taskId, key, value);
       setState(newState);
       toast.success(`${name === 'newTitle' ? 'Title' : 'Description'} added successfully`);
+      if (!isUpdated) setIsUpdated(true);
     }
   }
 
@@ -38,6 +40,7 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
       const newState = updateTaskValue(state, groupId, taskId, key, textContent);
       setState(newState);
       toast.success(`${name === 'newTitle' ? 'Title' : 'Description'} updated successfully`);
+      if (!isUpdated) setIsUpdated(true);
     }
   }
 
@@ -54,11 +57,22 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
     }
   }, []);
 
+  useEffect(() => {
+    let timerId;
+    if (isUpdated) {
+      timerId = setTimeout(() => setIsUpdated(false), 2000);
+    }
+    return () => clearTimeout(timerId);
+  }, [isUpdated]);
+
   return (
   <Modal show onClose={onClose}>
     <div className={s.actionContainer}>
-      <p className={s.actionTitle}>Actions</p>
-      <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.deleteBtn}>
+      {isUpdated ? 
+        <p className={s.actionStatus}>Updated 🤝</p> : 
+        <p className={s.actionStatus}><span>Note</span>: You can start editing the title/description right away.</p>
+      }
+      <button onClick={(event) => deleteTaskAndCloseModal(event)} className={s.dangerBtn}>
         Delete Task
         <DeleteIcon />
       </button>
@@ -106,17 +120,3 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
 }
 
 export default TaskModal;
-
-
-
-// For contentEditable using onBlur event
-//
-// const handleEditableContent = (groupId = '', taskId = '', key) => (event) => {
-//   event.stopPropagation();
-//   const { textContent, attributes } = event.target;
-//   const name = attributes.getNamedItem('name').value;
-//   if ((name === 'title' || name === 'newDesc') && textContent) {
-//     const newState = updateTaskValue(state, groupId, taskId, key, textContent);
-//     setState(newState);
-//   }
-// }
