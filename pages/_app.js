@@ -13,7 +13,7 @@ function App({ Component, pageProps }) {
             </Head>
             <div>
                 <Component {...pageProps} />
-                <div id="modal-root"></div>
+                <div id="modal-root" />
             </div>
         </>
     );
