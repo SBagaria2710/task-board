@@ -3,8 +3,9 @@
     align-items: center;
     position: relative;
     padding: 16px 12px;
-    border-bottom: 2px solid var(--color-switch);
+    border-bottom: 1px solid var(--color-switch);
     justify-content: space-between;
+    border-color: rgba(var(--secondary-color), 0.5);
 }
 .header::after {
     content: 'Shashwat';
