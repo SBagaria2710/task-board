@@ -374,7 +374,7 @@ body[data-theme="dark"] {
   --card-color: 24, 24, 24;
   --secondary-color: 255, 255, 255;
   --background-color: var(--dark-color);
-  background-color: var(--background-color);;
+  background-color: var(--background-color);
   color: var(--light-color);
 }
 body[data-theme="dark"] svg {

@@ -164,6 +164,7 @@ function Canvas() {
       }
     } else if (name === 'newTaskTitle') {
       const newState = updateTaskValue(state, groupId, taskId, 'title', value);
+      toast.success(`New Task Added: ${value}`);
       setState(newState);
       setNewTask({ ...newTask, ...initialNewTaskData })
     }
