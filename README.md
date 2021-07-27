@@ -87,7 +87,7 @@ Wish to setup the project in your local?
    npm/yarn install
    ```
 3. Start the project
-   ```JS
+   ```sh
    npm/yarn run dev
    ```
 
