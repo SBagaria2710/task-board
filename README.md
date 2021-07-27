@@ -53,7 +53,7 @@ Here's why:
 * Focus on continuous delivery.
 * Visual status of the ongoing tasks.
 
-Lastly, this is not going to be a throwaway project. I plan on working on more features like integrating [DraftJS](https://draftjs.org/), [Electron](https://www.electronjs.org/) app for desktop, group drag and drop, PWA, etc.
+Lastly, this is not going to be a throwaway project. I plan to work on more features like integrating [DraftJS](https://draftjs.org/), [Electron](https://www.electronjs.org/) app for desktop, group drag and drop, PWA, etc.
 
 ### Built With
 
