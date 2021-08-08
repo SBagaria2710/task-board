@@ -39,6 +39,10 @@ function SettingsModal({ onClose }) {
     }
   };
 
+  useEffect(() => {
+      document.body.dataset.theme = activeTheme === 'dark' ? 'dark' : 'light';
+  }, [activeTheme]);
+
   // Data Persistance
   useEffect(() => {
     const defaultTheme = localStorage.getItem('default-theme');
