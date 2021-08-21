@@ -7,4 +7,5 @@ export const socialLink = {
   github: 'https://github.com/SBagaria2710',
   twitter: 'https://twitter.com/SBagaria2710',
   codepen: 'https://codepen.io/iShashwat/',
+  linkTree: 'https://linktr.ee/ShashwatB',
 };
