@@ -221,7 +221,7 @@ function Canvas() {
     toast(
       <span>
         Built by&nbsp;
-        <a href={socialLink.linkedIn} target="_blank">Shashwat Bagaria</a>
+        <a href={socialLink.linkTree} target="_blank">Shashwat Bagaria</a>
       </span>, {
       duration: 271096, //my birth date 🎂
       icon: '🕺',
