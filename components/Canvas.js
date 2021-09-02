@@ -416,7 +416,7 @@ function Canvas() {
             onClick={toggleIsEditingNewGroupName}
             className={`${s.addNewTask} ${s.addGroupBtn}`}
           >
-            <p>+ Add a Group</p>
+            <p>+ Add Group</p>
           </button>
         )}
       </DragDropContext>
