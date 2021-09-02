@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
 //Components
-import Image from 'next/image';
+import Image from "next/image";
 
 // Icon
-import CrossIcon from 'public/assets/icons/crossIcon.js';
+import CrossIcon from "public/assets/icons/crossIcon.js";
 
 //Hooks
 import { useKeyPress, useOutsideClick } from "../hooks";
@@ -15,7 +15,7 @@ import s from "../styles/Modal.module.css";
 
 function Modal({ show, onClose, children, modalClass, modalContentClass }) {
   const ref = useRef();
-  useKeyPress('Escape', () => onClose());
+  useKeyPress("Escape", () => onClose());
   useOutsideClick(ref, () => onClose());
   const [isBrowser, setIsBrowser] = useState(false);
 
@@ -47,8 +47,8 @@ function Modal({ show, onClose, children, modalClass, modalContentClass }) {
 
   if (isBrowser) {
     return ReactDOM.createPortal(
-        modalContent, 
-        document.getElementById("modal-root")
+      modalContent,
+      document.getElementById("modal-root")
     );
   } else {
     return null;
