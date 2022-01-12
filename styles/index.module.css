@@ -2,7 +2,6 @@
   height: calc(100vh - 68px);
   padding: 24px 20px;
   margin: 0 auto;
-  overflow: scroll;
 }
 .main section {
   padding-right: 30px;
