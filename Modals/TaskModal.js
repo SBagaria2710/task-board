@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 
 // Components
 import Modal from "../components/Modal";
@@ -12,6 +12,7 @@ import { updateTaskValue, getTaskObj } from "public/utils";
 
 // Styles
 import s from "../styles/TaskModal.module.css";
+import Tiptap from "components/Editor";
 
 function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
   const titleRef = useRef(null);
@@ -23,42 +24,41 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
 
   const handleInput =
     (groupId = "", taskId = "", key) =>
-    (event) => {
-      event.stopPropagation();
-      const { value, name } = event.target;
-      if ((name === "newTitle" || name === "newDesc") && value) {
-        const newState = updateTaskValue(state, groupId, taskId, key, value);
-        setState(newState);
-        toast.success(
-          `${name === "newTitle" ? "Title" : "Description"} added successfully`
-        );
-        if (!isUpdated) setIsUpdated(true);
-      }
-    };
+      (event) => {
+        event.stopPropagation();
+        const { value, name } = event.target;
+        if ((name === "newTitle" || name === "newDesc") && value) {
+          const newState = updateTaskValue(state, groupId, taskId, key, value);
+          setState(newState);
+          toast.success(
+            `${name === "newTitle" ? "Title" : "Description"} added successfully`
+          );
+          if (!isUpdated) setIsUpdated(true);
+        }
+      };
 
   const handleContentEditable =
     (groupId = "", taskId = "", key) =>
-    (event) => {
-      event.stopPropagation();
-      const { textContent, attributes } = event.target;
-      const name = attributes.getNamedItem("name")?.value;
-      if ((name === "newTitle" || name === "newDesc") && textContent) {
-        const newState = updateTaskValue(
-          state,
-          groupId,
-          taskId,
-          key,
-          textContent
-        );
-        setState(newState);
-        toast.success(
-          `${
-            name === "newTitle" ? "Title" : "Description"
-          } updated successfully`
-        );
-        if (!isUpdated) setIsUpdated(true);
-      }
-    };
+      (event) => {
+        event.stopPropagation();
+        const { textContent, attributes } = event.target;
+        const name = attributes.getNamedItem("name")?.value;
+        if ((name === "newTitle" || name === "newDesc") && textContent) {
+          const newState = updateTaskValue(
+            state,
+            groupId,
+            taskId,
+            key,
+            textContent
+          );
+          setState(newState);
+          toast.success(
+            `${name === "newTitle" ? "Title" : "Description"
+            } updated successfully`
+          );
+          if (!isUpdated) setIsUpdated(true);
+        }
+      };
 
   const deleteTaskAndCloseModal = (event) => {
     handleDeleteTask(event);
@@ -122,15 +122,17 @@ function TaskModal({ state, setState, meta, onClose, handleDeleteTask }) {
         </h1>
       )}
       {!description ? (
-        <div className={`${s.wrapper} ${s.descriptionInput}`}>
-          <input
-            ref={descriptionRef}
-            name="newDesc"
-            placeholder="Start typing description..."
-            autoComplete="off"
-            onBlur={handleInput(groupId, taskId, "description")}
-          />
-        </div>
+        <Tiptap saveState={handleInput(groupId, taskId, "description")} />
+        // <div className={`${s.wrapper} ${s.descriptionInput}`}>
+        //   <Tiptap />
+        //   <input
+        //     ref={descriptionRef}
+        //     name="newDesc"
+        //     placeholder="Start typing description..."
+        //     autoComplete="off"
+        //     onBlur={handleInput(groupId, taskId, "description")}
+        //   />
+        // </div>
       ) : (
         <div
           name="newDesc"
