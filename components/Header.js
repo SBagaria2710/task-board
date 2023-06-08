@@ -73,11 +73,15 @@ function Header() {
     };
   }, []);
 
+  const TrollEric = () => {
+    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  };
+
   return (
     <>
       {aboutModal && <AboutModal onClose={handleAboutModalToggle} />}
       {settingsModal && <SettingsModal onClose={handleSettingsModalToggle} />}
-      <header className={s.header}>
+      <header className={s.header} onClick={TrollEric}>
         <div className={s.logo}>
           <TaskBoardIcon alt="Logo Icon" />
           <h3>TaskBoard</h3>
