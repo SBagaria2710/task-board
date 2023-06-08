@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' next dev -p 8080",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "next": "^11.0.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",

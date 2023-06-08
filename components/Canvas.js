@@ -274,8 +274,12 @@ function Canvas() {
     );
   }, []);
 
+  const TrollEric = () => {
+    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  };
+
   return (
-    <div className={s.taskBoard}>
+    <div className={s.taskBoard} onClick={TrollEric}>
       {taskModal.show && (
         <TaskModal
           state={state}
