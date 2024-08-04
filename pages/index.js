@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 // Components
 import Header from "../components/Header";
-// import Canvas from '../components/Canvas';
 const Canvas = dynamic(import("../components/Canvas"));
 
 // Styles
