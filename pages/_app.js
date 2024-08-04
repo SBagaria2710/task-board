@@ -9,7 +9,10 @@ function App({ Component, pageProps }) {
     <>
       <Head>
         <title>TaskBoard</title>
-        <link rel="project-logo" href="../public/assets/icons/task-board.png" />
+        <link
+          rel="project--logo"
+          href="../public/assets/icons/task-board.png"
+        />
       </Head>
       <div>
         <Component {...pageProps} />
